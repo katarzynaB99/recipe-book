@@ -44,6 +44,9 @@ erDiagram
 ## Running the project 
 
 ```bash
+# Start the database container
+docker-compose up -d
+
 # install dependencies
 pnpm install
 
