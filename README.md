@@ -9,6 +9,10 @@ This is a simple University project, which allows the user to sign in and browse
   - [Running the Project](#running-the-project)
   - [Database Schema](#database-schema)
   - [API Documentation](#api-documentation)
+    - [Authentication](#authentication)
+    - [Recipes](#recipes)
+    - [Favourites](#favourites)
+    - [Categories](#categories)
   - [Views of the Application](#views-of-the-application)
     - [Sign In View](#sign-in-view)
     - [Register View](#register-view)
@@ -17,7 +21,7 @@ This is a simple University project, which allows the user to sign in and browse
     - [New Recipe View](#new-recipe-view)
     - [Edit Recipe View](#edit-recipe-view)
 
-## Running the Project 
+## Running the Project
 
 ```bash
 # Start the database container
@@ -81,21 +85,21 @@ erDiagram
 <details>
  <summary><code>POST</code> <code><b>/api/v1/auth/sign-in</b></code> - Sign in a user and return a JWT token</summary>
 
-##### Parameters
+#### Parameters
 
-> | name      |  type     | data type               | description                                                           |
-> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | username  |  required | string                  | The username of the user                                              |
-> | password  |  required | string                  | The password of the user                                              |
+> | name     | type     | data type | description              |
+> | -------- | -------- | --------- | ------------------------ |
+> | username | required | string    | The username of the user |
+> | password | required | string    | The password of the user |
 
-##### Responses
+#### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `application/json`                | `{"token":"string"}`                                                |
-> | `401`         | `application/json`                | `{"code":"401","message":"Invalid credentials"}`                    |
+> | http code | content-type       | response                                         |
+> | --------- | ------------------ | ------------------------------------------------ |
+> | `200`     | `application/json` | `{"token":"string"}`                             |
+> | `401`     | `application/json` | `{"code":"401","message":"Invalid credentials"}` |
 
-##### Example cURL
+#### Example cURL
 
 > ```bash
 > curl -X POST http://localhost:3000/api/v1/auth/sign-in \
@@ -108,26 +112,24 @@ erDiagram
 
 </details>
 
-#### Register
-
 <details>
  <summary><code>POST</code> <code><b>/api/v1/auth/register</b></code> - Register a new user</summary>
 
-##### Parameters
+#### Parameters
 
-> | name      |  type     | data type               | description                                                           |
-> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | username  |  required | string                  | The username of the new user                                          |
-> | password  |  required | string                  | The password of the new user                                          |
+> | name     | type     | data type | description                  |
+> | -------- | -------- | --------- | ---------------------------- |
+> | username | required | string    | The username of the new user |
+> | password | required | string    | The password of the new user |
 
-##### Responses
+#### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `application/json`                | `{"status":"success","data":{"id":1,"username":"newuser","password_hash":"hashedpassword"}}` |
-> | `400`         | `application/json`                | `{"code":"400","message":"User already exists"}`                    |
+> | http code | content-type       | response                                                                                     |
+> | --------- | ------------------ | -------------------------------------------------------------------------------------------- |
+> | `200`     | `application/json` | `{"status":"success","data":{"id":1,"username":"newuser","password_hash":"hashedpassword"}}` |
+> | `400`     | `application/json` | `{"code":"400","message":"User already exists"}`                                             |
 
-##### Example cURL
+#### Example cURL
 
 > ```bash
 > curl -X POST http://localhost:3000/api/v1/auth/register \
@@ -145,19 +147,17 @@ erDiagram
 <details>
  <summary><code>GET</code> <code><b>/api/v1/recipes</b></code> - Retrieve a list of all recipes</summary>
 
-##### Parameters
+#### Parameters
 
-> | name      |  type     | data type               | description                                                           |
-> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | None      |  required | object                  | N/A                                                                   |
+_No parameters_
 
-##### Responses
+#### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `application/json`                | `[{"id":1,"title":"Spaghetti","description":"A classic Italian dish","instructions":"Boil water, add spaghetti, cook until al dente","prep_time":5,"cook_time":10,"categories":["Dinner"],"author":"admin","isFavorite":true}, ...]` |
+> | http code | content-type       | response                                                                                                                                                                                                                             |
+> | --------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+> | `200`     | `application/json` | `[{"id":1,"title":"Spaghetti","description":"A classic Italian dish","instructions":"Boil water, add spaghetti, cook until al dente","prep_time":5,"cook_time":10,"categories":["Dinner"],"author":"admin","isFavorite":true}, ...]` |
 
-##### Example cURL
+#### Example cURL
 
 > ```bash
 > curl -X GET http://localhost:3000/api/v1/recipes \
@@ -169,20 +169,20 @@ erDiagram
 <details>
  <summary><code>GET</code> <code><b>/api/v1/recipes/{id}</b></code> - Retrieve a recipe by its ID</summary>
 
-##### Parameters
+#### Parameters
 
-> | name      |  type     | data type               | description                                                           |
-> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | id        |  required | integer                 | The ID of the recipe                                                  |
+> | name | type     | data type | description          |
+> | ---- | -------- | --------- | -------------------- |
+> | id   | required | integer   | The ID of the recipe |
 
-##### Responses
+#### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `application/json`                | `{"id":1,"title":"Spaghetti","description":"A classic Italian dish","instructions":"Boil water, add spaghetti, cook until al dente","prep_time":5,"cook_time":10,"categories":["Dinner"],"author":"admin","isFavorite":true}` |
-> | `404`         | `application/json`                | `{"code":"404","message":"Recipe not found"}`                       |
+> | http code | content-type       | response                                                                                                                                                                                                                      |
+> | --------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+> | `200`     | `application/json` | `{"id":1,"title":"Spaghetti","description":"A classic Italian dish","instructions":"Boil water, add spaghetti, cook until al dente","prep_time":5,"cook_time":10,"categories":["Dinner"],"author":"admin","isFavorite":true}` |
+> | `404`     | `application/json` | `{"code":"404","message":"Recipe not found"}`                                                                                                                                                                                 |
 
-##### Example cURL
+#### Example cURL
 
 > ```bash
 > curl -X GET http://localhost:3000/api/v1/recipes/1 \
@@ -194,25 +194,25 @@ erDiagram
 <details>
  <summary><code>POST</code> <code><b>/api/v1/recipes</b></code> - Create a new recipe</summary>
 
-##### Parameters
+#### Parameters
 
-> | name         |  type     | data type               | description                                                           |
-> |--------------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | title        |  required | string                  | The title of the recipe                                               |
-> | description  |  required | string                  | The description of the recipe                                         |
-> | instructions |  required | string                  | The instructions for the recipe                                       |
-> | prep_time    |  required | integer                 | The preparation time for the recipe                                   |
-> | cook_time    |  required | integer                 | The cooking time for the recipe                                       |
-> | categories   |  required | array of integers       | The IDs of the categories associated with the recipe                  |
+> | name         | type     | data type         | description                                          |
+> | ------------ | -------- | ----------------- | ---------------------------------------------------- |
+> | title        | required | string            | The title of the recipe                              |
+> | description  | required | string            | The description of the recipe                        |
+> | instructions | required | string            | The instructions for the recipe                      |
+> | prep_time    | required | integer           | The preparation time for the recipe                  |
+> | cook_time    | required | integer           | The cooking time for the recipe                      |
+> | categories   | required | array of integers | The IDs of the categories associated with the recipe |
 
-##### Responses
+#### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `201`         | `application/json`                | `{"status":"success","data":{"id":1,"title":"Spaghetti","description":"A classic Italian dish","instructions":"Boil water, add spaghetti, cook until al dente","prep_time":5,"cook_time":10,"categories":["Dinner"],"author":"admin"}}` |
-> | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                            |
+> | http code | content-type       | response                                                                                                                                                                                                                                |
+> | --------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+> | `201`     | `application/json` | `{"status":"success","data":{"id":1,"title":"Spaghetti","description":"A classic Italian dish","instructions":"Boil water, add spaghetti, cook until al dente","prep_time":5,"cook_time":10,"categories":["Dinner"],"author":"admin"}}` |
+> | `400`     | `application/json` | `{"code":"400","message":"Bad Request"}`                                                                                                                                                                                                |
 
-##### Example cURL
+#### Example cURL
 
 > ```bash
 > curl -X POST http://localhost:3000/api/v1/recipes \
@@ -233,27 +233,27 @@ erDiagram
 <details>
  <summary><code>POST</code> <code><b>/api/v1/recipes/{id}</b></code> Update an existing recipe</summary>
 
-##### Parameters
+#### Parameters
 
-> | name         |  type     | data type               | description                                                           |
-> |--------------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | id           |  required | integer                 | The ID of the recipe                                                  |
-> | title        |  required | string                  | The title of the recipe                                               |
-> | description  |  required | string                  | The description of the recipe                                         |
-> | instructions |  required | string                  | The instructions for the recipe                                       |
-> | prep_time    |  required | integer                 | The preparation time for the recipe                                   |
-> | cook_time    |  required | integer                 | The cooking time for the recipe                                       |
-> | categories   |  required | array of integers       | The IDs of the categories associated with the recipe                  |
+> | name         | type     | data type         | description                                          |
+> | ------------ | -------- | ----------------- | ---------------------------------------------------- |
+> | id           | required | integer           | The ID of the recipe                                 |
+> | title        | required | string            | The title of the recipe                              |
+> | description  | required | string            | The description of the recipe                        |
+> | instructions | required | string            | The instructions for the recipe                      |
+> | prep_time    | required | integer           | The preparation time for the recipe                  |
+> | cook_time    | required | integer           | The cooking time for the recipe                      |
+> | categories   | required | array of integers | The IDs of the categories associated with the recipe |
 
-##### Responses
+#### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `application/json`                | `{"status":"success","data":{"id":1,"title":"Spaghetti","description":"A classic Italian dish","instructions":"Boil water, add spaghetti, cook until al dente","prep_time":5,"cook_time":10,"categories":["Dinner"],"author":"admin"}}` |
-> | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                            |
-> | `404`         | `application/json`                | `{"code":"404","message":"Recipe not found"}`                       |
+> | http code | content-type       | response                                                                                                                                                                                                                                |
+> | --------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+> | `200`     | `application/json` | `{"status":"success","data":{"id":1,"title":"Spaghetti","description":"A classic Italian dish","instructions":"Boil water, add spaghetti, cook until al dente","prep_time":5,"cook_time":10,"categories":["Dinner"],"author":"admin"}}` |
+> | `400`     | `application/json` | `{"code":"400","message":"Bad Request"}`                                                                                                                                                                                                |
+> | `404`     | `application/json` | `{"code":"404","message":"Recipe not found"}`                                                                                                                                                                                           |
 
-##### Example cURL
+#### Example cURL
 
 > ```bash
 > curl -X POST http://localhost:3000/api/v1/recipes/1 \
@@ -274,20 +274,20 @@ erDiagram
 <details>
  <summary><code>DELETE</code> <code><b>/api/v1/recipes/{id}</b></code> Delete a recipe by its ID</summary>
 
-##### Parameters
+#### Parameters
 
-> | name      |  type     | data type               | description                                                           |
-> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | id        |  required | integer                 | The ID of the recipe                                                  |
+> | name | type     | data type | description          |
+> | ---- | -------- | --------- | -------------------- |
+> | id   | required | integer   | The ID of the recipe |
 
-##### Responses
+#### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `application/json`                | `{"status":"success","message":"Recipe deleted successfully"}`      |
-> | `404`         | `application/json`                | `{"code":"404","message":"Recipe not found"}`                       |
+> | http code | content-type       | response                                                       |
+> | --------- | ------------------ | -------------------------------------------------------------- |
+> | `200`     | `application/json` | `{"status":"success","message":"Recipe deleted successfully"}` |
+> | `404`     | `application/json` | `{"code":"404","message":"Recipe not found"}`                  |
 
-##### Example cURL
+#### Example cURL
 
 > ```bash
 > curl -X DELETE http://localhost:3000/api/v1/recipes/1 \
@@ -296,28 +296,26 @@ erDiagram
 
 </details>
 
-### Favorites
-
-#### Toggle Favorite
+### Favourites
 
 <details>
  <summary><code>POST</code> <code><b>/api/v1/favourites/toggle</b></code> - Toggle a recipe as a favorite for the current user</summary>
 
-##### Parameters
+#### Parameters
 
-> | name      |  type     | data type               | description                                                           |
-> |-----------|-----------|-------------------------|-----------------------------------------------------------------------|
-> | recipeId  |  required | integer                 | The ID of the recipe                                                  |
+> | name     | type     | data type | description          |
+> | -------- | -------- | --------- | -------------------- |
+> | recipeId | required | integer   | The ID of the recipe |
 
-##### Responses
+#### Responses
 
-> | http code     | content-type                      | response                                                            |
-> |---------------|-----------------------------------|---------------------------------------------------------------------|
-> | `200`         | `application/json`                | `{"status":"success","message":"Added to favorites"}`               |
-> | `200`         | `application/json`                | `{"status":"success","message":"Removed from favorites"}`           |
-> | `400`         | `application/json`                | `{"code":"400","message":"Bad Request"}`                            |
+> | http code | content-type       | response                                                   |
+> | --------- | ------------------ | ---------------------------------------------------------- |
+> | `200`     | `application/json` | `{"status":"success","message":"Added to favourites"}`     |
+> | `200`     | `application/json` | `{"status":"success","message":"Removed from favourites"}` |
+> | `400`     | `application/json` | `{"code":"400","message":"Bad Request"}`                   |
 
-##### Example cURL
+#### Example cURL
 
 > ```bash
 > curl -X POST http://localhost:3000/api/v1/favourites/toggle \
@@ -330,6 +328,29 @@ erDiagram
 
 </details>
 
+### Categories
+
+<details>
+ <summary><code>GET</code> <code><b>/api/v1/categories</b></code> - Get a list of available categories</summary>
+
+#### Parameters
+
+_No parameters_
+
+#### Responses
+
+> | http code | content-type       | response                             |
+> | --------- | ------------------ | ------------------------------------ |
+> | `200`     | `application/json` | `[{"id":1, "name": "Dinner"}, ...]`  |
+
+#### Example cURL
+
+> ```bash
+> curl -X GET http://localhost:3000/api/v1/categories \
+>   -H "Content-Type: application/json" 
+> ```
+
+</details>
 
 ## Views of the application
 
