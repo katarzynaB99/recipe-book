@@ -5,7 +5,7 @@ This is a simple University project, which allows the user to sign in and browse
 ## Database
 
 ```mermaid
-erDiagram ER
+erDiagram
     USER {
         int id PK
         string username
@@ -25,24 +25,19 @@ erDiagram ER
         string name
     }
     RECIPECATEGORY {
-        int recipeId PK FK
-        int categoryId PK FK
+        int recipeId "PK FK"
+        int categoryId "PK FK"
     }
     FAVOURITE {
-        int userId PK FK
-        int recipeId PK FK
+        int userId "PK FK"
+        int recipeId "PK FK"
     }
 
     USER ||--o{ RECIPE : "has many"
-    RECIPE }o--|| USER : "belongs to"
     RECIPE ||--o{ RECIPECATEGORY : "has many"
     CATEGORY ||--o{ RECIPECATEGORY : "has many"
-    RECIPECATEGORY }o--|| RECIPE : "belongs to"
-    RECIPECATEGORY }o--|| CATEGORY : "belongs to"
     USER ||--o{ FAVOURITE : "has many"
     RECIPE ||--o{ FAVOURITE : "has many"
-    FAVOURITE }o--|| USER : "belongs to"
-    FAVOURITE }o--|| RECIPE : "belongs to"
 ```
 
 
