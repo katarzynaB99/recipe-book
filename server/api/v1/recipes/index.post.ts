@@ -1,4 +1,28 @@
+import authMiddleware from "~/server/middleware/auth";
+
 export default defineEventHandler(async (event) => {
+  console.log('POST /api/v1/recipes');
+
+  // Extract the token from the Authorization header
+  const authHeader = event.req.headers['authorization'];
+  if (!authHeader) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
+  }
+
+  const token = authHeader.split(' ')[1];
+  if (!token) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
+  }
+
+  // Verify the token
+  let decodedToken;
+  try {
+    const config = useRuntimeConfig();
+    decodedToken = jwt.verify(token, config.jwtSecret);
+  } catch (err) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
+  }
+
   const body = await readBody(event);
   console.log('Creating recipe', body);
 
@@ -9,8 +33,7 @@ export default defineEventHandler(async (event) => {
       instructions: body.instructions,
       prep_time: body.prep_time,
       cook_time: body.cook_time,
-      // Assuming you have a userId to associate with the recipe
-      // userId: body.userId, // Uncomment and set this if you have userId in the request body
+      userId: body.user_id
     });
 
     // Associate the recipe with the selected categories

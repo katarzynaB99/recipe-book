@@ -1,4 +1,5 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
+import bcrypt from 'bcryptjs';
 
 export const sequelize = new Sequelize(process.env.NUXT_POSTGRES_URL!, {
   logging: false,
@@ -50,7 +51,7 @@ Recipe.belongsToMany(User, { through: Favourite, as: 'favouritedBy' });
   await sequelize.sync({ force: true });
   const user = await User.create({
     username: 'admin',
-    password_hash: 'admin',
+    password_hash: bcrypt.hashSync('admin', 10),
   });
 
   const category = await Category.create({ name: 'Dinner' });

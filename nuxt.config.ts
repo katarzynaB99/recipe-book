@@ -19,5 +19,8 @@ export default defineNuxtConfig({
             preset: Aura
         }
     }
-}
+  },
+  runtimeConfig: {
+    jwtSecret: process.env.NUXT_JWT_SECRET
+  }
 })

@@ -2,25 +2,21 @@
 import Menubar from "primevue/menubar";
 import Button from "primevue/button";
 import { ref } from "vue";
+import { jwtDecode } from "jwt-decode";
 
-const user = { name: "John Doe" };
+const token = useCookie("token");
+
+const user = computed(() => {
+  return token.value ? jwtDecode(token.value) : null;
+});
+
+const logout = () => {
+  token.value = null;
+  navigateTo("/sign-in");
+};
 
 const items = ref([
-  {
-    label: "Home",
-    icon: "pi pi-home",
-    to: "/",
-  },
-  {
-    label: "Browse Recipes",
-    icon: "pi pi-list",
-    to: "/recipes",
-  },
-  {
-    label: "Favourites",
-    icon: "pi pi-heart",
-    to: "/favourites",
-  },
+  { label: "Browse Recipes", icon: "pi pi-list", to: "/recipes" },
 ]);
 </script>
 
@@ -39,16 +35,12 @@ const items = ref([
         </NuxtLink>
       </template>
       <template #end>
-        <div class="inline-block me-4">
-          {{ user.name }}
+        <div v-if="user" class="inline-block">
+          <div class="inline-block me-4">
+            {{ user.username }}
+          </div>
+          <Button @click="logout" icon="pi pi-sign-out" size="small" severity="secondary" />
         </div>
-        <!-- log out button -->
-        <Button
-          icon="pi pi-sign-out"
-          severity="secondary"
-          size="small"
-          variant="outlined"
-        />
       </template>
     </menubar>
   </div>

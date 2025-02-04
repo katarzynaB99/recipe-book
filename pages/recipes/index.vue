@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import DataTable from "primevue/datatable";
-import Column from "primevue/column";
-import Button from "primevue/button";
+definePageMeta({
+  middleware: 'auth'
+});
 
 const { data, isFetching } = await useFetch("/api/v1/recipes");
 </script>

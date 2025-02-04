@@ -5,6 +5,11 @@ import Textarea from "primevue/textarea";
 import Card from "primevue/card";
 import MultiSelect from "primevue/multiselect";
 import { ref } from "vue";
+import { jwtDecode } from 'jwt-decode';
+
+definePageMeta({
+  middleware: 'auth'
+});
 
 const router = useRouter();
 
@@ -18,13 +23,17 @@ const cookTime = ref(0);
 const selectedCategories = ref([]);
 
 const submitForm = async () => {
+  const token = useCookie('token').value;
+  const decodedToken = jwtDecode(token);
+
   const recipeData = {
     title: title.value,
     description: description.value,
     instructions: instructions.value,
     prep_time: prepTime.value,
     cook_time: cookTime.value,
-    categories: selectedCategories.value
+    categories: selectedCategories.value,
+    user_id: decodedToken.id
   };
 
   try {
@@ -32,6 +41,7 @@ const submitForm = async () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(recipeData),
     });
