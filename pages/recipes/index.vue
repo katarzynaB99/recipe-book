@@ -20,7 +20,21 @@ const { data, isFetching } = await useFetch("/api/v1/recipes");
       tableStyle="min-width: 50rem"
       :loading="isFetching"
     >
-      <Column field="title" header="Title"></Column>
+      <Column>
+        <template #body="bodyData">
+          <Button icon="pi pi-heart" severity="secondary" />
+        </template>
+      </Column>
+      <Column field="title" header="Title">
+        <template #body="bodyData">
+          <NuxtLink
+            :to="`/recipes/${bodyData.data.id}`"
+            class="text-blue-500"
+          >
+            {{ bodyData.data.title }}
+          </NuxtLink>
+        </template>
+      </Column>
       <Column field="description" header="Description"></Column>
       <Column field="category" header="Category">
         <template #body="bodyData">

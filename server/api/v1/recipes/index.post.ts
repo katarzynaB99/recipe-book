@@ -1,4 +1,5 @@
 import authMiddleware from "~/server/middleware/auth";
+import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event) => {
   console.log('POST /api/v1/recipes');
@@ -8,23 +9,22 @@ export default defineEventHandler(async (event) => {
   if (!authHeader) {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
-
+  
   const token = authHeader.split(' ')[1];
   if (!token) {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
-
+  
   // Verify the token
   let decodedToken;
   try {
-    const config = useRuntimeConfig();
+    const config = useRuntimeConfig(event);
     decodedToken = jwt.verify(token, config.jwtSecret);
   } catch (err) {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
 
   const body = await readBody(event);
-  console.log('Creating recipe', body);
 
   try {
     const newRecipe = await Recipe.create({
