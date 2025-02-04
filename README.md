@@ -9,6 +9,9 @@ Core technologies used:
   - Frontend:⁠ [Vue.js](https://vuejs.org/)
 - Database: [⁠Docker](https://www.docker.com/) + ⁠[PostgreSQL](https://www.postgresql.org.pl/)
 
+> [!TIP]
+> Live Demo is available: https://recipe-book-demo.devest.dev/
+
 ## Table of Contents
 
 - [Recipe Book](#recipe-book)
