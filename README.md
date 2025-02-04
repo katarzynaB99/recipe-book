@@ -2,6 +2,13 @@
 
 This is a simple University project, which allows the user to sign in and browse recipes. User can also add recipes to favourites or create their own.
 
+Core technologies used:
+
+⁠- [Nuxt.js](https://nuxt.com/) 
+  - Backend: [⁠Nitro](https://nitro.build/),
+  - Frontend:⁠ [Vue.js](https://vuejs.org/)
+- Database: [⁠Docker](https://www.docker.com/) + ⁠[PostgreSQL](https://www.postgresql.org.pl/)
+
 ## Table of Contents
 
 - [Recipe Book](#recipe-book)
