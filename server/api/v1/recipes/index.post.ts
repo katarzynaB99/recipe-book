@@ -1,4 +1,4 @@
-import authMiddleware from "~/server/middleware/auth";
+// import authMiddleware from "~/server/middleware/auth";
 import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event) => {
