@@ -38,16 +38,16 @@ Core technologies used:
 docker-compose up -d
 
 # install dependencies
-pnpm install
+npm install
 
 # Start the development server
-pnpm run dev
+npm run dev
 
 # Build the app
-pnpm build
+npm build
 
 # Preview production
-pnpm preview
+npm preview
 ```
 
 ## Database Schema
