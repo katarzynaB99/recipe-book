@@ -34,8 +34,11 @@ Core technologies used:
 ## Running the Project
 
 ```bash
+# Create a network for containers to communicate 
+docker network create --driver=bridge --attachable recipe-book-network
+
 # Start the database container
-docker-compose up -d
+docker compose up -d postgres
 
 # install dependencies
 npm install
@@ -48,6 +51,9 @@ npm build
 
 # Preview production
 npm preview
+
+# Deploy the app
+docker compose up -d --build # on the server
 ```
 
 ## Database Schema
