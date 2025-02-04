@@ -1,75 +1,63 @@
-# Nuxt Minimal Starter
+# Recipe Book
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is a simple University project, which allows the user to sign in and browse recipes. User can also add recipes to favourites or create their own.
 
-## Setup
+## Database
 
-Make sure to install dependencies:
+```mermaid
+erDiagram ER
+    USER {
+        int id PK
+        string username
+        string password_hash
+    }
+    RECIPE {
+        int id PK
+        string title
+        string description
+        text instructions
+        int prep_time
+        int cook_time
+        int userId FK
+    }
+    CATEGORY {
+        int id PK
+        string name
+    }
+    RECIPECATEGORY {
+        int recipeId PK FK
+        int categoryId PK FK
+    }
+    FAVOURITE {
+        int userId PK FK
+        int recipeId PK FK
+    }
+
+    USER ||--o{ RECIPE : "has many"
+    RECIPE }o--|| USER : "belongs to"
+    RECIPE ||--o{ RECIPECATEGORY : "has many"
+    CATEGORY ||--o{ RECIPECATEGORY : "has many"
+    RECIPECATEGORY }o--|| RECIPE : "belongs to"
+    RECIPECATEGORY }o--|| CATEGORY : "belongs to"
+    USER ||--o{ FAVOURITE : "has many"
+    RECIPE ||--o{ FAVOURITE : "has many"
+    FAVOURITE }o--|| USER : "belongs to"
+    FAVOURITE }o--|| RECIPE : "belongs to"
+```
+
+
+## Running the project 
 
 ```bash
-# npm
-npm install
-
-# pnpm
+# install dependencies
 pnpm install
 
-# yarn
-yarn install
+# Start the development server
+pnpm run dev
 
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
+# Build the app
 pnpm build
 
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
+# Preview production
 pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

@@ -75,23 +75,4 @@ Recipe.belongsToMany(User, { through: Favourite, as: 'favouritedBy' });
     userId: user.id,
     recipeId: recipe.id,
   });
-
-  // const user = await User.create({ username: "admin", password_hash: "admin" });
-  // console.log('created user: ' + JSON.stringify(user));
-  // const category = await Category.create({ name: "Dinner" });
-  // console.log('created category: ' + JSON.stringify(category));
-  // const recipe = await Recipe.create({
-  //   title: "Spaghetti",
-  //   description: "A classic Italian dish",
-  //   instructions: "Boil water, add spaghetti, cook until al dente",
-  //   prep_time: 5,
-  //   cook_time: 10,
-  //   user_id: user.id
-  // });
-  // console.log('created recipe: ' + JSON.stringify(recipe));
-  // const recipeCategory = await RecipeCategory.create({
-  //   recipe_id: recipe.id,
-  //   category_id: category.id
-  // })
-  // console.log('created recipeCategory: ' + JSON.stringify(recipeCategory));
 })();
