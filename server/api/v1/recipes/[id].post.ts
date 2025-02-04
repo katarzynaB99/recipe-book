@@ -1,8 +1,9 @@
-// import authMiddleware from "~/server/middleware/auth";
+import { Recipe, Category } from "~/server/utils/db";
 import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event) => {
-  console.info('POST /api/v1/recipes');
+  const recipeId = getRouterParam(event, "id");
+  console.info(`POST /api/v1/recipes/${recipeId}`);
 
   // Extract the token from the Authorization header
   const authHeader = event.req.headers['authorization'];
@@ -10,13 +11,13 @@ export default defineEventHandler(async (event) => {
     console.error('no header')
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
-  
+
   const token = authHeader.split(' ')[1];
   if (!token) {
     console.error('no token')
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
-  
+
   // Verify the token
   let decodedToken;
   try {
@@ -30,14 +31,20 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   try {
-    const newRecipe = await Recipe.create({
-      title: body.title,
-      description: body.description,
-      instructions: body.instructions,
-      prep_time: body.prep_time,
-      cook_time: body.cook_time,
-      userId: body.user_id
-    });
+    // Find the existing recipe
+    const recipe = await Recipe.findByPk(recipeId);
+    if (!recipe) {
+      console.error('no recipe with specified ID');
+      throw createError({ statusCode: 404, statusMessage: 'Recipe not found' });
+    }
+
+    // Update the recipe fields
+    recipe.title = body.title;
+    recipe.description = body.description;
+    recipe.instructions = body.instructions;
+    recipe.prep_time = body.prep_time;
+    recipe.cook_time = body.cook_time;
+    await recipe.save();
 
     // Associate the recipe with the selected categories
     if (body.categories && body.categories.length > 0) {
@@ -46,18 +53,18 @@ export default defineEventHandler(async (event) => {
           id: body.categories,
         },
       });
-      await newRecipe.setCategories(categories);
+      await recipe.setCategories(categories);
     }
 
     return {
       status: 'success',
-      data: newRecipe,
+      data: recipe,
     };
   } catch (error) {
-    console.error('Error creating recipe:', error);
+    console.error('Error updating recipe:', error);
     return {
       status: 'error',
-      message: 'Failed to create recipe',
+      message: 'Failed to update recipe',
     };
   }
 });

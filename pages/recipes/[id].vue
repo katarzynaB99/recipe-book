@@ -43,12 +43,15 @@ const toggleFavorite = async () => {
       <h1>{{ data.title }}</h1>
       <Tag
         v-for="category in data.categories"
-        :key="category"
-        :value="category"
+        :key="category.id"
+        :value="category.name"
         class="ml-2 mt-4 mb-2 h-8"
       />
     </div>
     <div>
+      <NuxtLink :to="`/recipes/edit/${data.id}`">
+        <Button icon="pi pi-pencil" severity="secondary" class="mr-2" outlined />
+      </NuxtLink>
       <Button
         icon="pi pi-heart"
         :severity="data.isFavorite ? 'danger' : 'secondary'"

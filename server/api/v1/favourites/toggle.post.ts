@@ -3,17 +3,17 @@ import jwt from "jsonwebtoken";
 // import authMiddleware from "~/server/utils/auth";
 
 export default defineEventHandler(async (event) => {
-  console.log('POST /api/v1/favourites/toggle');
+  console.info('POST /api/v1/favourites/toggle');
   // Extract the token from the Authorization header
   const authHeader = event.req.headers['authorization'];
   if (!authHeader) {
-    console.log('a');
+    console.error('no header');
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
   
   const token = authHeader.split(' ')[1];
   if (!token) {
-    console.log('b');
+    console.error('no token');
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
   
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig(event);
     decodedToken = jwt.verify(token, config.jwtSecret);
   } catch (err) {
-    console.log(err);
+    console.error(err);
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
   const body = await readBody(event);
@@ -35,10 +35,12 @@ export default defineEventHandler(async (event) => {
   if (favorite) {
     // If the recipe is already a favorite, remove it
     await favorite.destroy();
+    console.info('Favourite removed');
     return { status: 'success', message: 'Removed from favorites' };
   } else {
     // If the recipe is not a favorite, add it
     await Favourite.create({ userId, recipeId });
+    console.info('Favourite created');
     return { status: 'success', message: 'Added to favorites' };
   }
 });

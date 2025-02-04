@@ -2,13 +2,14 @@ import { User } from "~/server/utils/db";
 import bcrypt from "bcryptjs";
 
 export default defineEventHandler(async (event) => {
-  console.log('POST /api/v1/auth/register');
+  console.info('POST /api/v1/auth/register');
   const body = await readBody(event);
   const { username, password } = body;
 
   // Check if the user already exists
   const existingUser = await User.findOne({ where: { username } });
   if (existingUser) {
+    console.error('User already exists');
     throw createError({ statusCode: 400, statusMessage: 'User already exists' });
   }
 

@@ -2,7 +2,7 @@ import { Recipe, Category, User } from "~/server/utils/db";
 import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event) => {
-  console.log("GET /api/v1/recipes");
+  console.info("GET /api/v1/recipes");
   // Extract the token from the Authorization header
   const authHeader = event.req.headers['authorization'];
   if (!authHeader) {
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
       }
     ],
   });
-  console.log(`returning ${recipes.length} recipes`);
+  console.info(`returning ${recipes.length} recipes`);
   return recipes.map((recipeObj) => ({
     id: recipeObj.id,
     title: recipeObj.title,

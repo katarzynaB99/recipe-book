@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 export default defineEventHandler(async (event) => {
   const recipeId = getRouterParam(event, "id");
-  console.log(`GET /api/v1/recipes/${recipeId}`);
+  console.info(`GET /api/v1/recipes/${recipeId}`);
 
   const authHeader = event.req.headers['authorization'];
   if (!authHeader) {
@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     include: [
       {
         model: Category,
-        attributes: ["name"],
+        attributes: ["id", "name"],
         through: { attributes: [] }, // Exclude RecipeCategory attributes
       },
       {
@@ -47,6 +47,7 @@ export default defineEventHandler(async (event) => {
     ],
   });
   if (!recipeObj) return {};
+  console.info('returning recipe');
   return {
     id: recipeObj.id,
     title: recipeObj.title,
@@ -54,7 +55,7 @@ export default defineEventHandler(async (event) => {
     instructions: recipeObj.instructions,
     prep_time: recipeObj.prep_time,
     cook_time: recipeObj.cook_time,
-    categories: recipeObj.categories.map((categoryObj) => categoryObj.name),
+    categories: recipeObj.categories.map((categoryObj) => ({ name: categoryObj.name, id: categoryObj.id })),
     author: recipeObj.author ? recipeObj.author.username : '',
     isFavorite: recipeObj.favourites.length > 0
   };

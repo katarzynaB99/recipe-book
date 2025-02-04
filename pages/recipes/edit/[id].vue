@@ -4,7 +4,7 @@ import FloatLabel from "primevue/floatlabel";
 import Textarea from "primevue/textarea";
 import Card from "primevue/card";
 import MultiSelect from "primevue/multiselect";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { jwtDecode } from 'jwt-decode';
 
 definePageMeta({
@@ -12,19 +12,41 @@ definePageMeta({
 });
 
 const router = useRouter();
+const route = useRoute();
 
-const { data: categories } = useFetch("/api/v1/categories");
+const token = useCookie('token');
+
+const { data: recipe } = useFetch(`/api/v1/recipes/${route.params.id}`, {
+  headers: {
+    Authorization: `Bearer ${token.value}`,
+  },
+  onResponse: ({ response }) => {
+    if (response._data) {
+      title.value = response._data.title;
+      description.value = response._data.description;
+      instructions.value = response._data.instructions;
+      prepTime.value = response._data.prep_time;
+      cookTime.value = response._data.cook_time;
+      selectedCategories.value = response._data.categories.map(cat => cat.id);
+    }
+  },
+});
+
+const { data: categories } = useFetch("/api/v1/categories", {
+  headers: {
+    Authorization: `Bearer ${token.value}`,
+  },
+});
 
 const title = ref("");
 const description = ref("");
 const instructions = ref("");
-const prepTime = ref(0);
-const cookTime = ref(0);
+const prepTime = ref("");
+const cookTime = ref("");
 const selectedCategories = ref([]);
 
 const submitForm = async () => {
-  const token = useCookie('token').value;
-  const decodedToken = jwtDecode(token);
+  const decodedToken = jwtDecode(token.value);
 
   const recipeData = {
     title: title.value,
@@ -37,11 +59,11 @@ const submitForm = async () => {
   };
 
   try {
-    const response = await fetch("/api/v1/recipes", {
+    const response = await fetch(`/api/v1/recipes/${route.params.id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${token.value}`
       },
       body: JSON.stringify(recipeData),
     });
@@ -50,8 +72,7 @@ const submitForm = async () => {
       throw new Error("Failed to create recipe");
     }
 
-    const result = await response.json();
-    console.info("Recipe created:", result);
+    console.info("Recipe updated");
 
     // Redirect to the recipes list page
     router.push("/recipes");
@@ -63,7 +84,7 @@ const submitForm = async () => {
 
 <template>
   <div class="flex justify-between items-center">
-    <h1>New Recipe</h1>
+    <h1>Edit Recipe</h1>
   </div>
   <form id="create-recipe-form" @submit.prevent="submitForm">
     <Card>
@@ -154,7 +175,7 @@ const submitForm = async () => {
           </FloatLabel>
         </div>
 
-        <Button type="submit" label="Create" />
+        <Button type="submit" label="Save" />
       </template>
     </Card>
   </form>
