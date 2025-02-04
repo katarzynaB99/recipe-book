@@ -38,7 +38,7 @@ Core technologies used:
 docker network create --driver=bridge --attachable recipe-book-network
 
 # Start the database container
-docker compose up -d postgres
+docker compose -f docker-compose.yml up -d
 
 # install dependencies
 npm install
@@ -50,10 +50,11 @@ npm run dev
 npm build
 
 # Preview production
-npm preview
+pnpm preview
 
-# Deploy the app
-docker compose up -d --build # on the server
+# Deploy
+docker network create --driver=bridge --attachable database
+docker compose -f docker-compose.prod.yml up -d --build
 ```
 
 ## Database Schema

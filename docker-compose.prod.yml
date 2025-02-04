@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      recipe-book-network: {}
+
+  app:
+    build: .
+    container_name: recipe-book-demo
+    environment:
+      NUXT_POSTGRES_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      NUXT_JWT_SECRET: ${NUXT_JWT_SECRET}
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    networks:
+      recipe-book-network: {}
+
+volumes:
+  postgres_data:
+
+networks:
+  recipe-book-network:
+    external: true

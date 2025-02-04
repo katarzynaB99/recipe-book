@@ -10,25 +10,6 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    # networks:
-    #   recipe-book-network: {}
-
-  # app:
-  #   build: .
-  #   container_name: recipe-book-demo
-  #   environment:
-  #     NUXT_POSTGRES_URL: ${NUXT_POSTGRES_URL}
-  #     NUXT_JWT_SECRET: ${NUXT_JWT_SECRET}
-  #   ports:
-  #     - '3000:3000'
-  #   depends_on:
-  #     - postgres
-  #   networks:
-  #     recipe-book-network: {}
 
 volumes:
   postgres_data:
-
-# networks:
-#   recipe-book-network:
-#     external: true
