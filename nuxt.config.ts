@@ -9,6 +9,9 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module'
   ],
   vite: {
+    server: {
+      allowedHosts: [ 'recipe-book-demo.devest.dev' ]
+    },
     plugins: [
       tailwindcss()
     ]
@@ -21,6 +24,13 @@ export default defineNuxtConfig({
     }
   },
   runtimeConfig: {
-    jwtSecret: process.env.NUXT_JWT_SECRET
+    jwtSecret: process.env.NUXT_JWT_SECRET,
+    public: {
+      baseURL: 'http://recipe-book-demo.devest.dev'
+    }
+  },
+  app: {
+    baseURL: '/',
+    buildAssetsDir: '/_nuxt/',
   }
 })
